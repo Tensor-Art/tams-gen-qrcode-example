@@ -2,6 +2,10 @@
 
 This is an example for demonstrating how to use TAMS SDK. We have leveraged the capabilities of the TAMS SDK to create an Web App that can generate QR codes based on prompts.
 
+![screenshot](screenshot.jpeg)
+
+You can visit this [website](https://tams-gen-qrcode-example-git-main-zhuscat.vercel.app/) to see the demo.
+
 ## Deploy
 
 You can deploy your own instance by clicking deploy button [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTensor-Art%2Ftams-gen-qrcode-example&env=TAMS_PRIVATE_KEY,APP_SECRET)
