@@ -172,7 +172,9 @@ export default function Home() {
           <div className="text-lg font-semibold mb-2">🪄 Workspace</div>
           <div className="form-control w-full max-w-xs">
             <label className="label">
-              <span className="label-text">URL</span>
+              <span className="label-text">
+                URL<span className="text-red-500">*</span>
+              </span>
             </label>
             <input
               type="text"
@@ -184,7 +186,9 @@ export default function Home() {
           </div>
           <div className="form-control w-full max-w-xs">
             <label className="label">
-              <span className="label-text">Weight</span>
+              <span className="label-text">
+                Weight<span className="text-red-500">*</span>
+              </span>
             </label>
             <input
               type="text"
@@ -232,7 +236,9 @@ export default function Home() {
           </div>
           <div className="form-control w-full max-w-xs mb-4">
             <label className="label">
-              <span className="label-text">Prompt</span>
+              <span className="label-text">
+                Prompt<span className="text-red-500">*</span>
+              </span>
             </label>
             <textarea
               className="textarea textarea-bordered"
