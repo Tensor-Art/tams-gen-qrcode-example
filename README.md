@@ -6,22 +6,7 @@ This is an example for demonstrating how to use TAMS SDK. We have leveraged the 
 
 You can visit this [website](https://tams-gen-qrcode-example-git-main-zhuscat.vercel.app/) to see the demo.
 
-## Development
-
-Before you `npm run dev`, you should create a `.env.local` file containing `TAMS_PRIVATE_KEY` and `APP_SECRET`
-
-```
-$ git clone git@github.com:Tensor-Art/tams-gen-qrcode-example.git
-$ cd tams-gen-qrcode-example
-$ npm install
-$ npm run dev
-```
-
-## Deploy
-
-You can deploy your own instance by clicking deploy button [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTensor-Art%2Ftams-gen-qrcode-example&env=TAMS_PRIVATE_KEY,APP_SECRET)
-
-### Environment Variables
+## Environment Variables
 
 #### `TAMS_PRIVATE_KEY` (required)
 
@@ -36,3 +21,18 @@ cat ./YOUR_PRIVATE_KEY_PATH | base64
 #### `APP_SECRET` (required)
 
 Access password. Users can use your Web App after entering secret.
+
+## Development
+
+Before you `npm run dev`, you should create a `.env.local` file containing `TAMS_PRIVATE_KEY` and `APP_SECRET`
+
+```
+$ git clone git@github.com:Tensor-Art/tams-gen-qrcode-example.git
+$ cd tams-gen-qrcode-example
+$ npm install
+$ npm run dev
+```
+
+## Deploy
+
+You can deploy your own instance by clicking deploy button [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTensor-Art%2Ftams-gen-qrcode-example&env=TAMS_PRIVATE_KEY,APP_SECRET)
