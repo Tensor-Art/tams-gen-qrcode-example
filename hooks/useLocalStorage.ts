@@ -1,4 +1,10 @@
-import { useEffect, useState } from 'react'
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 
 const isServer = typeof window === 'undefined'
 
@@ -12,6 +18,7 @@ export function useLocalStorage<T>(
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => initialValue)
+  const [inited, setInited] = useState(false)
 
   const initialize = () => {
     if (isServer) {
@@ -34,6 +41,7 @@ export function useLocalStorage<T>(
     if (!isServer) {
       const result = initialize()
       setStoredValue(result)
+      setInited(true)
       if (opts?.onSet) {
         opts.onSet(result)
       }
@@ -43,29 +51,33 @@ export function useLocalStorage<T>(
 
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to localStorage.
-  const setValue = (value: T | ((v: T) => T)) => {
-    try {
-      // Allow value to be a function so we have same API as useState
-      const valueToStore =
-        value instanceof Function
-          ? (v: T) => {
-              const ret = value(v)
-              if (typeof window !== 'undefined') {
-                window.localStorage.setItem(key, JSON.stringify(ret))
+  const setValue: Dispatch<SetStateAction<T>> = useCallback(
+    (value: T | ((v: T) => T)) => {
+      try {
+        // Allow value to be a function so we have same API as useState
+        const valueToStore =
+          value instanceof Function
+            ? (v: T) => {
+                const ret = value(v)
+                if (typeof window !== 'undefined') {
+                  window.localStorage.setItem(key, JSON.stringify(ret))
+                }
+                return ret
               }
-              return ret
-            }
-          : () => {
-              if (typeof window !== 'undefined') {
-                window.localStorage.setItem(key, JSON.stringify(value))
+            : () => {
+                if (typeof window !== 'undefined') {
+                  window.localStorage.setItem(key, JSON.stringify(value))
+                }
+                return value
               }
-              return value
-            }
-      setStoredValue(valueToStore)
-    } catch (error) {
-      // A more advanced implementation would handle the error case
-      console.log(error)
-    }
-  }
-  return [storedValue, setValue] as const
+        setStoredValue(valueToStore)
+      } catch (error) {
+        // A more advanced implementation would handle the error case
+        console.log(error)
+      }
+    },
+    [key],
+  )
+
+  return [storedValue, setValue, inited] as const
 }

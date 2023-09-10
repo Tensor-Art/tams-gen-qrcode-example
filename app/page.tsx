@@ -7,35 +7,9 @@ import { Settings } from '@/components/icons/Settings'
 import { useInterval } from 'ahooks'
 import { produce } from 'immer'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { MODELS } from '@/constants'
 
 export default function Home() {
-  const models = [
-    {
-      id: '601420727112962175',
-      name: 'Cartoon',
-      modelName: 'Dark Sushi',
-      src: '/models/cartoon.jpg',
-    },
-    // {
-    //   id: '605430856472889767',
-    //   name: '3D',
-    //   modelName: 'Cute 3D',
-    //   src: '/models/3d.jpeg',
-    // },
-    {
-      id: '603003048899406426',
-      name: 'Realistic',
-      modelName: 'majicMIX realistic',
-      src: '/models/realistic.jpeg',
-    },
-    // {
-    //   id: '613021712969275555',
-    //   name: 'Chinese Tradtional Style',
-    //   modelName: 'You Si Miao',
-    //   src: '/models/chinese_traditional_style.jpeg',
-    // },
-  ]
-
   const [messages, setMessages] = useState<
     { content: string; type: 'success' | 'error' | 'info'; timestamp: number }[]
   >([])
@@ -43,25 +17,15 @@ export default function Home() {
   const [url, setUrl] = useState('')
   const [weight, setWeight] = useState('')
   const [prompt, setPrompt] = useState('')
-  const [selectedModelId, setSelectedModelId] = useState(models[0].id)
-  const [secretInited, setSecretInited] = useState(false)
-  const [historyInited, setHistoryInited] = useState(false)
+  const [selectedModelId, setSelectedModelId] = useState(MODELS[0].id)
   const isInited = useRef(false)
-  const [secret, setSecret] = useLocalStorage('APP_SECRET', '', {
-    onSet: () => {
-      setSecretInited(true)
-    },
-  })
-  const [history, setHistory] = useLocalStorage<
+  const [secret, setSecret, isSecretInited] = useLocalStorage('APP_SECRET', '')
+  const [history, setHistory, isHistoryInited] = useLocalStorage<
     { id: string; status: string; url?: string }[]
-  >('HISTORY', [], {
-    onSet: () => {
-      setHistoryInited(true)
-    },
-  })
+  >('HISTORY', [])
 
   useEffect(() => {
-    if (secretInited && historyInited && !isInited.current) {
+    if (isSecretInited && isHistoryInited && !isInited.current) {
       isInited.current = true
       history.forEach((h) => {
         if (h.status === 'SUCCESS') {
@@ -84,6 +48,7 @@ export default function Home() {
                       draftHistory[index].status = res.status
                       draftHistory[index].url = res.successInfo.images[0].url
                     }
+                    draftHistory.splice(10)
                   })
                 })
               },
@@ -91,7 +56,7 @@ export default function Home() {
         }
       })
     }
-  }, [secret, history, secretInited, historyInited])
+  }, [secret, history, isHistoryInited, isSecretInited, setHistory])
 
   async function handleGenerate() {
     try {
@@ -140,6 +105,7 @@ export default function Home() {
         setHistory((history) => {
           return produce(history!, (draftHistory) => {
             draftHistory.unshift(json)
+            draftHistory.splice(10)
           })
         })
       }
@@ -239,7 +205,7 @@ export default function Home() {
               <span className="label-text">Style</span>
             </label>
             <div>
-              {models.map((m) => (
+              {MODELS.map((m) => (
                 <div
                   key={m.id}
                   className={clsx(

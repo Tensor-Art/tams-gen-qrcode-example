@@ -186,6 +186,8 @@ export async function POST(request: NextRequest) {
                 weight: body.weight,
                 inputImageResourceId: resourceId,
                 preprocessor: 'none',
+                guidanceStart: 0,
+                guidanceEnd: 1,
               },
             ],
           },
