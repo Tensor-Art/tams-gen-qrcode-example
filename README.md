@@ -10,9 +10,9 @@ You can visit this [website](https://tams-gen-qrcode-example-git-main-zhuscat.ve
 
 #### `TAMS_PRIVATE_KEY` (required)
 
-Your TAMS private key after base64 encoding.
+Your TAMS private key after base64 encoding. You can manage your TAMS private key on [Tensor Art Model Serivce](https://tams.tensor.art).
 
-You can generate it by following command:
+After downloading the private key on your local machine, you can generate the base64 encoding key by following command:
 
 ```
 cat ./YOUR_PRIVATE_KEY_PATH | base64
@@ -34,5 +34,7 @@ $ npm run dev
 ```
 
 ## Deploy
+
+### Deploy on Vercel
 
 You can deploy your own instance by clicking deploy button [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTensor-Art%2Ftams-gen-qrcode-example&env=TAMS_PRIVATE_KEY,APP_SECRET)
