@@ -131,7 +131,8 @@ export default function Home() {
                       )
                       if (index > -1) {
                         draftHistory[index].status = res.status
-                        draftHistory[index].url = res.successInfo.images[0].url
+                        draftHistory[index].url =
+                          res?.successInfo?.images?.[0]?.url ?? ''
                       }
                     })
                   })
@@ -156,6 +157,14 @@ export default function Home() {
       })
     })
   }, 100)
+
+  function getStatus({ status }: { status: string }) {
+    if (status === 'FAILED') {
+      return 'Failed'
+    }
+
+    return 'Loading'
+  }
 
   return (
     <main className="flex gap-4">
@@ -276,7 +285,7 @@ export default function Home() {
                     {item.url ? (
                       <img src={item.url} alt="" />
                     ) : (
-                      <span className="text-gray-500">Loading</span>
+                      <span className="text-gray-500">{getStatus(item)}</span>
                     )}
                   </div>
                 )
