@@ -167,7 +167,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex gap-4">
+    <main className="flex flex-col p-4 sm:flex-row sm:pt-0 gap-4">
       <div className="bg-white rounded-lg overflow-hidden relative shadow">
         <div className="h-[calc(100vh-64px)] overflow-y-scroll py-4 px-6 pb-[100px]">
           <div className="text-lg font-semibold mb-2">🪄 Workspace</div>
@@ -259,7 +259,7 @@ export default function Home() {
         </div>
       </div>
       <div className="bg-white rounded-lg overflow-hidden relative shadow">
-        <div className="w-[300px] h-[calc(100vh-64px)] p-4 overflow-y-scroll">
+        <div className="w-auto sm:w-[300px] h-[calc(100vh-64px)] p-4 overflow-y-scroll">
           <div className="flex items-center justify-between mb-2">
             <div className="text-lg font-semibold">📌 History</div>
             <div onClick={handleRemoveHistory}>
