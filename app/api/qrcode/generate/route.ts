@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import * as uuid from 'uuid'
 import qrcode from 'qrcode'
 import { t } from 'tams-sdk'
+import { ratelimit } from '@/service/redis'
 
 const defaultParams = {
   '601420727112962175': {
@@ -145,6 +146,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         message: 'Please enter prompt',
+      },
+      { status: 400 },
+    )
+  }
+
+  const { success } = await ratelimit.limit(
+    request.headers.get('x-forwarded-for') || 'api',
+  )
+
+  if (!success) {
+    return NextResponse.json(
+      {
+        message: 'Too many requests, please try again later.',
       },
       { status: 400 },
     )

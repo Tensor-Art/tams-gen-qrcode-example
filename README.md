@@ -18,13 +18,17 @@ After downloading the private key on your local machine, you can generate the ba
 cat ./YOUR_PRIVATE_KEY_PATH | base64
 ```
 
-#### `APP_SECRET` (required)
+#### `UPSTASH_REDIS_REST_URL` (required)
 
-Access password. Users can use your Web App after entering secret.
+Your Upstash Redis REST URL. You can get it from [upstash](https://upstash.com/)
+
+#### `UPSTASH_REDIS_REST_TOKEN`(required)
+
+Your Upstash Redis REST Token. You can get it from [upstash](https://upstash.com/)
 
 ## Development
 
-Before you `npm run dev`, you should create a `.env.local` file containing `TAMS_PRIVATE_KEY` and `APP_SECRET`
+Before you `npm run dev`, you should create a `.env.local` file containing `TAMS_PRIVATE_KEY`, `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`
 
 ```
 $ git clone git@github.com:Tensor-Art/tams-gen-qrcode-example.git
@@ -37,4 +41,4 @@ $ npm run dev
 
 ### Deploy on Vercel
 
-You can deploy your own instance by clicking deploy button [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTensor-Art%2Ftams-gen-qrcode-example&env=TAMS_PRIVATE_KEY,APP_SECRET)
+You can deploy your own instance by clicking deploy button [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTensor-Art%2Ftams-gen-qrcode-example&env=TAMS_PRIVATE_KEY,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN)

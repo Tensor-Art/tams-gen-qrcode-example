@@ -3,11 +3,11 @@
 import clsx from 'clsx'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { Settings } from '@/components/icons/Settings'
 import { useInterval } from 'ahooks'
 import { produce } from 'immer'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { MODELS } from '@/constants'
+import { Trash } from '@/components/icons/Trash'
 
 export default function Home() {
   const [messages, setMessages] = useState<
@@ -19,21 +19,16 @@ export default function Home() {
   const [prompt, setPrompt] = useState('')
   const [selectedModelId, setSelectedModelId] = useState(MODELS[0].id)
   const isInited = useRef(false)
-  const [secret, setSecret, isSecretInited] = useLocalStorage('APP_SECRET', '')
   const [history, setHistory, isHistoryInited] = useLocalStorage<
     { id: string; status: string; url?: string }[]
   >('HISTORY', [])
 
   useEffect(() => {
-    if (isSecretInited && isHistoryInited && !isInited.current) {
+    if (isHistoryInited && !isInited.current) {
       isInited.current = true
       history.forEach((h) => {
         if (h.status === 'SUCCESS') {
-          fetch(`/api/job/${h.id}`, {
-            headers: {
-              authorization: `Bearer ${secret}`,
-            },
-          })
+          fetch(`/api/job/${h.id}`)
             .then((res) => res.json())
             .then(
               (res: {
@@ -56,7 +51,11 @@ export default function Home() {
         }
       })
     }
-  }, [secret, history, isHistoryInited, isSecretInited, setHistory])
+  }, [history, isHistoryInited, setHistory])
+
+  function handleRemoveHistory() {
+    setHistory([])
+  }
 
   async function handleGenerate() {
     try {
@@ -75,9 +74,6 @@ export default function Home() {
 
       const resp = await fetch('/api/qrcode/generate', {
         method: 'POST',
-        headers: {
-          authorization: `Bearer ${secret}`,
-        },
         body: JSON.stringify({
           url,
           weight: +weight,
@@ -119,11 +115,7 @@ export default function Home() {
           ['CREATED', 'PENDING', 'RUNNING', 'WAITING'].includes(history.status),
         )
         .forEach((h) => {
-          fetch(`/api/job/${h.id}`, {
-            headers: {
-              authorization: `Bearer ${secret}`,
-            },
-          })
+          fetch(`/api/job/${h.id}`)
             .then((res) => res.json())
             .then(
               (res: {
@@ -249,47 +241,22 @@ export default function Home() {
           </div>
         </div>
         <div className="flex items-center border-t border-gray-200 absolute bottom-0 left-0 right-0 bg-white px-6 py-4">
-          {secret ? (
-            <button
-              className="btn btn-primary flex-auto mr-2"
-              onClick={handleGenerate}
-            >
-              Generate
-            </button>
-          ) : (
-            <div
-              className="tooltip flex-auto mr-2"
-              data-tip="Please click the settings button on the right to configure the secret first."
-            >
-              <button className="btn btn-primary btn-disabled w-full">
-                Generate
-              </button>
-            </div>
-          )}
-          <div className="dropdown dropdown-top dropdown-end">
-            <label tabIndex={0} className="btn">
-              <div className="text-2xl cursor-pointer">
-                <Settings />
-              </div>
-            </label>
-            <div
-              tabIndex={0}
-              className="dropdown-content z-[1] menu p-4 shadow bg-base-100 rounded-box w-[300px] mb-2"
-            >
-              <input
-                type="text"
-                placeholder="Please enter your secret"
-                className="input input-bordered w-full max-w-xs"
-                value={secret}
-                onChange={(e) => setSecret(e.target.value)}
-              />
-            </div>
-          </div>
+          <button
+            className="btn btn-primary flex-auto"
+            onClick={handleGenerate}
+          >
+            Generate
+          </button>
         </div>
       </div>
       <div className="bg-white rounded-lg overflow-hidden relative shadow">
         <div className="w-[300px] h-[calc(100vh-64px)] p-4 overflow-y-scroll">
-          <div className="text-lg font-semibold mb-2">📌 History</div>
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-lg font-semibold">📌 History</div>
+            <div onClick={handleRemoveHistory}>
+              <Trash />
+            </div>
+          </div>
           <div className="text-xs mb-2">
             The history will only be saved locally. Clearing the cache will
             result in losing the history.
