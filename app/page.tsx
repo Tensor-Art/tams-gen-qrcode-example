@@ -3,11 +3,13 @@
 import clsx from 'clsx'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useInterval } from 'ahooks'
 import { produce } from 'immer'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { MODELS } from '@/constants'
 import { Trash } from '@/components/icons/Trash'
+import { Github } from '@/components/icons/Github'
 
 export default function Home() {
   const [messages, setMessages] = useState<
@@ -167,10 +169,20 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col p-4 sm:flex-row sm:pt-0 gap-4">
+    <main className="flex flex-col p-4 sm:flex-row sm:pt-0 gap-4 relative">
       <div className="bg-white rounded-lg overflow-hidden relative shadow">
         <div className="h-[calc(100vh-64px)] overflow-y-scroll py-4 px-6 pb-[100px]">
-          <div className="text-lg font-semibold mb-2">🪄 Workspace</div>
+          <div className="flex justify-between items-center mb-2">
+            <div className="text-lg font-semibold">🪄 Workspace</div>
+            <Link
+              className="flex items-center text-slate-800 hover:text-primary"
+              href="https://github.com/Tensor-Art/tams-gen-qrcode-example"
+              target="_blank"
+            >
+              <Github />
+              <span className="text-sm ml-1">Source Code</span>
+            </Link>
+          </div>
           <div className="form-control w-full max-w-xs">
             <label className="label">
               <span className="label-text">
@@ -262,7 +274,7 @@ export default function Home() {
         <div className="w-auto sm:w-[300px] h-[calc(100vh-64px)] p-4 overflow-y-scroll">
           <div className="flex items-center justify-between mb-2">
             <div className="text-lg font-semibold">📌 History</div>
-            <div onClick={handleRemoveHistory}>
+            <div onClick={handleRemoveHistory} className="cursor-pointer">
               <Trash />
             </div>
           </div>
